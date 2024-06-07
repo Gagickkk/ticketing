@@ -1,30 +1,30 @@
-import {MongoMemoryServer} from 'mongodb-memory-server'
-import mongoose from 'mongoose'
-import request from 'supertest'
-import {app} from '../app'
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import request from 'supertest';
+import { app } from '../app';
 
 declare global {
   var signin: () => Promise<string[] | undefined>;
 }
 
-let mongo: any
+let mongo: any;
 
 beforeAll(async () => {
-process.env.JWT_KEY = 'asdf'
+  process.env.JWT_KEY = 'asdf';
 
-  mongo = await MongoMemoryServer.create();
+   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
 
-  await mongoose.connect(mongoUri, {})
-})
+  await mongoose.connect(mongoUri, {});
+});
 
 beforeEach(async () => {
-  const collections = await mongoose.connection.db.collections()
+  const collections = await mongoose.connection.db.collections();
 
   for (let collection of collections) {
-    await collection.deleteMany({})
+    await collection.deleteMany({});
   }
-})
+});
 
 afterAll(async () => {
   if (mongo) {
